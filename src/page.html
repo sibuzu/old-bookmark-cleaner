@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Quick Bookmarks Cleaner</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
+        <link rel="stylesheet" href="page.css">
+    </head>
+    <body>
+        <a id="title" href="page.html">Quick Bookmarks Cleaner</a>
+
+        <form action="#" id="form-options" class="clearfix">
+            <button id="start" type="submit">Start</button>
+
+            <div id="options">
+                <label for="concurrent-requests">Concurrent requests</label>
+                <input type="number" id="concurrent-requests" value="3">
+
+                <label for="request-timeout">Request timeout (s)</label>
+                <input type="number" id="request-timeout" value="5">
+
+                <label for="http-method">HTTP method</label>
+                <select id="http-method">
+                    <option>GET</option>
+                    <option>HEAD</option>
+                </select>
+            </div>
+
+            <div id="progress">
+                <div id="progress-inner"></div>
+            </div>
+
+            <div id="testing-url"></div>
+        </form>
+
+        <form action="#">
+            <select id="filter-bookmarks">
+                <option value="error">Error</option>
+                <option value="serverError">Server error</option>
+                <option value="invalid">Invalid URL</option>
+                <option value="timeout">Timeout</option>
+                <option value="emptyFolder">Empty folders</option>
+                <option value="javascript">Bookmarklets</option>
+                <option value="local">Local files</option>
+                <option value="redirect">Redirected</option>
+                <option value="ok">OK</option>
+            </select>
+        </form>
+
+        <div id="table"></div>
+        <!--
+        <table>
+            <thead>
+                <tr class="ok">
+                    <th class="td-code">Code</th>
+                    <th class="td-title">Title</th>
+                    <th class="td-url">URL</th>
+                    <th class="td-url" colspan="4">New URL</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr data-id="1000" data-array="ok">
+                    <td class="td-code">200</td>
+                    <td class="td-title" contentEditable spellcheck="false" title="path &gt; here">Some bookmark</td>
+                    <td class="td-url" contentEditable spellcheck="false">https://example.net</td>
+                    <td class="td-url">https://example.com</td>
+                    <td class="td-link"></td>
+                    <td class="td-remove"></td>
+                    <td class="td-update"></td>
+                </tr>
+            </tbody>
+        </table>
+        -->
+
+        <script src="page.js"></script>
+    </body>
+</html>

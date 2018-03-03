@@ -1,0 +1,178 @@
+/* CSS reset ---------------------------------------------------------------- */
+body, div, form, label, input, select, option, button {
+    padding: 0;
+    margin: 0;
+    font: inherit
+}
+
+.clearfix:after {
+    visibility: hidden;
+    display: block;
+    font-size: 0;
+    content: " ";
+    clear: both;
+    height: 0
+}
+
+* {
+    box-sizing: border-box
+}
+/* Fim CSS reset ------------------------------------------------------------ */
+
+body {
+    padding: 20px;
+    font: 14px Open Sans, sans-serif;
+    color: #212121
+}
+
+a {
+    display: inline-block;
+    margin-bottom: 20px;
+    font-size: 20px;
+    color: #F57F17;
+    text-decoration: none
+}
+
+a:hover {
+    text-decoration: underline
+}
+
+input[type="number"], select, button {
+    margin-right: 20px;
+    padding: 2px;
+}
+
+input[type="number"] {
+    width: 45px
+}
+
+button {
+    padding: 2px 20px
+}
+
+#start, #options, #progress, #testing-url {
+    float: left
+}
+
+#progress {
+    width: 400px;
+    height: 25px;
+    border: 1px solid #888;
+    display: none
+}
+
+#progress-inner {
+    width: 0;
+    height: 23px;
+    background-color: #090
+}
+
+#testing-url {
+    margin-left: 20px;
+    color: #999
+}
+
+#filter-bookmarks {
+    display: none
+}
+
+#table {
+    margin-top: 20px
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+th {
+    font-weight: normal
+}
+
+th, td {
+    padding: 5px;
+    border: 1px solid #999;
+    /*white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis*/
+    word-wrap: break-word
+}
+
+tr.error {
+    background-color: #FFCC80
+}
+
+tr.serverError {
+    background-color: #EF9A9A
+}
+
+tr.invalid {
+    background-color: #D7CCC8
+}
+
+tr.timeout {
+    background-color: #B0BEC5
+}
+
+tr.emptyFolder {
+    background-color: #FFF59D
+}
+
+tr.javascript {
+    background-color: #CE93D8
+}
+
+tr.local {
+    background-color: #80DEEA
+}
+
+tr.redirect {
+    background-color: #90CAF9
+}
+
+tr.ok {
+    background-color: #A5D6A7
+}
+
+.td-code {
+    width: 50px;
+    max-width: 50px;
+    text-align: center
+}
+
+.td-title {
+    width: 250px;
+    max-width: 250px
+}
+
+.td-url {
+    width: 740px;
+    max-width: 740px
+}
+
+.redirect-to .td-url {
+    width: 350px;
+    max-width: 350px
+}
+
+.td-link,
+.td-remove,
+.td-update {
+    width: 40px;
+    text-align: center;
+    cursor: pointer;
+    background-repeat: no-repeat;
+    background-position: center
+}
+
+.td-link {
+    background-image: url(img/link.png)
+}
+
+.td-remove {
+    background-image: url(img/remove.png)
+}
+
+.td-update {
+    background-image: url(img/update.png)
+}
