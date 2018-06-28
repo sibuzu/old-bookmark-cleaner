@@ -289,7 +289,7 @@ function renderTemplate(list, opt) {
             limitString(url, 40) + '&#34;"></td>';
         tpl += '<td class="td-remove" title="Remove bookmark &#34;' + title +
             '&#34;"></td>';
-        tpl += '<td class="td-archive" title="Archive URL"></td>';
+        tpl += '<td class="td-archive" title="Archive page"></td>';
 
         if (opt.redirect) {
             tpl += '<td class="td-update" title="Update URL to &#34;' +
