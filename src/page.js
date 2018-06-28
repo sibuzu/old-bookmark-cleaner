@@ -470,7 +470,7 @@ addEvent($table, 'click', function(e) {
         bookmarkUrl = $parent.children[2].innerText;
 
         chrome.tabs.create({
-            url: 'http://archive.today/?run=1&url=' +
+            url: 'http://archive.is/?run=1&url=' +
                 encodeURIComponent(bookmarkUrl)
         });
     }
