@@ -91,11 +91,19 @@ th {
 
 th, td {
     padding: 5px;
-    border: 1px solid #999;
+    border: 1px solid #EEE;
     /*white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis*/
     word-wrap: break-word
+}
+
+tr:nth-child(even) td {
+    background-color: #F2F2F2
+}
+
+tr:nth-child(odd) td {
+    background-color: #FFF
 }
 
 tr.error {
