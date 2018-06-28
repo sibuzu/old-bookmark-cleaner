@@ -107,6 +107,10 @@ tr:nth-child(odd) td {
     background-color: #FFF
 }
 
+tr:hover td {
+    background-color: #E0F7FA
+}
+
 tr.error {
     background-color: #FFCC80
 }
