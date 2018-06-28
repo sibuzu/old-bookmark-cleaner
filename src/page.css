@@ -72,7 +72,8 @@ button {
     color: #999
 }
 
-#filter-bookmarks {
+#filter-bookmarks,
+#delete-all {
     display: none
 }
 

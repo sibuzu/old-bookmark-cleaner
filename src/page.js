@@ -29,6 +29,7 @@ var $progress = document.getElementById('progress');
 var $progressInner = document.getElementById('progress-inner');
 var $testingUrl = document.getElementById('testing-url');
 var $filterBookmarks = document.getElementById('filter-bookmarks');
+var $deleteAll = document.getElementById('delete-all');
 var $table = document.getElementById('table');
 
 
@@ -92,7 +93,7 @@ function readBookmark(node, path) {
 
 function deleteBookmark(id, callback) {
     chrome.bookmarks.remove(id, function() {
-        callback(!chrome.runtime.lastError);
+        callback && callback(!chrome.runtime.lastError);
     });
 }
 
@@ -191,10 +192,13 @@ function finished() {
     // Now it's over
 
     // Hide options (timeout, method, etc) and progress bar
-    hide($formOptions);
+    $formOptions.style.display = 'none';
 
     // Show filter (Error, server error, redirected, etc)
-    show($filterBookmarks);
+    $filterBookmarks.style.display = 'inline-block';
+
+    // Show delete all button
+    $deleteAll.style.display = 'inline-block';
 
     // Show counter for each filter
     Array.from($filterBookmarks).forEach(function(e) {
@@ -321,19 +325,28 @@ function addEvent(obj, type, callback) {
     obj.addEventListener(type, callback);
 }
 
-function hide(obj) {
-    obj.style.display = 'none';
-}
-
-function show(obj) {
-    obj.style.display = 'block';
-}
-
 function limitString(str, size) {
     if (str.length > size) {
         str = str.substr(0, size) + '...';
     }
     return str;
+}
+
+function updateBookmarkCount(type, count) {
+    var $option = $filterBookmarks.querySelector('[value="' + type + '"]');
+
+    // Remove current counter from <option>
+    var html = $option.innerHTML.split(' ');
+    html.pop();
+
+    // Set new counter to <option>
+    html.push('(' + count + ')');
+    html = html.join(' ');
+    $option.innerHTML = html;
+
+    if (!count) {
+        $table.innerHTML = 'None';
+    }
 }
 
 
@@ -346,9 +359,9 @@ addEvent($formOptions, 'submit', function(e) {
     timeout = $requestTimeout.value * 1000;
     method = $httpMethod.value;
 
-    hide($start);
-    hide($options);
-    show($progress);
+    $start.style.display = 'none';
+    $options.style.display = 'none';
+    $progress.style.display = 'block';
 
     chrome.bookmarks.getTree(function(nodes) {
 
@@ -376,6 +389,26 @@ addEvent($filterBookmarks, 'change', function() {
 });
 
 
+// Delete all
+addEvent($deleteAll, 'click', function(e) {
+    e.preventDefault();
+
+    var type = $filterBookmarks.value;
+
+    if (type === 'ok') {
+        alert('You should not delete all your bookmarks that are working at once');
+        return;
+    }
+
+    if (confirm('Are you sure?')) {
+        bookmarks[type].forEach(function(bookmark) {
+            deleteBookmark(bookmark.id);
+        });
+
+        updateBookmarkCount(type, 0);
+    }
+});
+
 // Click remove, update or link
 addEvent($table, 'click', function(e) {
     var $target = e.target;
@@ -397,20 +430,8 @@ addEvent($table, 'click', function(e) {
         $parent.parentNode.removeChild($parent);
 
         var count = bookmarks[type].length;
-        var $option = $filterBookmarks.querySelector('[value="' + type + '"]');
 
-        // Remove current counter from <option>
-        var html = $option.innerHTML.split(' ');
-        html.pop();
-
-        // Set new counter to <option>
-        html.push('(' + count + ')');
-        html = html.join(' ');
-        $option.innerHTML = html;
-
-        if (!count) {
-            $table.innerHTML = 'None';
-        }
+        updateBookmarkCount(type, count);
     }
 
     if (className === 'td-remove') {
