@@ -124,19 +124,9 @@ function httpRequest() {
         return;
     }
 
-    counter++;
-
-    // Progress bar
-    var percentage = 100 * (counter / total).toFixed(2);
-    $progressInner.style.width = percentage + '%';
-
-    // Page title like 5/400
-    document.title = counter + '/' + total;
-
     // Show current url - only first 60 characters
     var currentUrl = limitString(bookmark.url, 60);
     $testingUrl.innerHTML = htmlEscape(currentUrl);
-
 
     // Start HTTP request
     var xhr = new XMLHttpRequest();
@@ -145,6 +135,15 @@ function httpRequest() {
 
     xhr.onreadystatechange = function() {
         if (xhr.readyState === XMLHttpRequest.DONE) {
+            counter++;
+
+            // Progress bar
+            var percentage = 100 * (counter / total).toFixed(2);
+            $progressInner.style.width = percentage + '%';
+
+            // Page title like 5/400
+            document.title = counter + '/' + total;
+
             bookmark.status = xhr.status;
 
             // 0
