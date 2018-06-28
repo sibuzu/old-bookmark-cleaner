@@ -234,10 +234,10 @@ function renderTemplate(list, opt) {
 
     if (opt.redirect) {
         tpl += '<th class="td-url">URL</th>';
-        tpl += '<th class="td-url" colspan="4">New URL</th>';
+        tpl += '<th class="td-url" colspan="5">New URL</th>';
     }
     else {
-        tpl += '<th class="td-url" colspan="3">URL</th>';
+        tpl += '<th class="td-url" colspan="4">URL</th>';
     }
 
     tpl += '</tr>';
@@ -286,6 +286,7 @@ function renderTemplate(list, opt) {
             limitString(url, 40) + '&#34;"></td>';
         tpl += '<td class="td-remove" title="Remove bookmark &#34;' + title +
             '&#34;"></td>';
+        tpl += '<td class="td-archive" title="Archive URL"></td>';
 
         if (opt.redirect) {
             tpl += '<td class="td-update" title="Update URL to &#34;' +
@@ -381,6 +382,8 @@ addEvent($table, 'click', function(e) {
     var $parent = $target.parentNode;
     var className = $target.className;
     var bookmarkId;
+    var bookmarkUrl;
+    var bookmarkRedirectUrl;
 
     function deleteElement() {
         var type = $parent.getAttribute('data-array');
@@ -422,7 +425,7 @@ addEvent($table, 'click', function(e) {
 
     else if (className === 'td-update') {
         bookmarkId = $parent.getAttribute('data-id');
-        var bookmarkRedirectUrl = $parent.children[3].innerText;
+        bookmarkRedirectUrl = $parent.children[3].innerText;
 
         var opt = {
             url: bookmarkRedirectUrl
@@ -436,11 +439,19 @@ addEvent($table, 'click', function(e) {
     }
 
     else if (className === 'td-link') {
-        bookmarkId = $parent.getAttribute('data-id');
-        var bookmarkUrl = $parent.children[2].innerText;
+        bookmarkUrl = $parent.children[2].innerText;
 
         chrome.tabs.create({
             url: bookmarkUrl
+        });
+    }
+
+    else if (className === 'td-archive') {
+        bookmarkUrl = $parent.children[2].innerText;
+
+        chrome.tabs.create({
+            url: 'http://archive.today/?run=1&url=' +
+                encodeURIComponent(bookmarkUrl)
         });
     }
 });
