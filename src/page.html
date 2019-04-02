@@ -2,20 +2,20 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Quick Bookmark Cleaner</title>
+        <title>Old Bookmark Cleaner</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans">
         <link rel="stylesheet" href="page.css">
     </head>
     <body>
-        <a id="title" href="page.html">Quick Bookmark Cleaner</a>
+        <a id="title" href="page.html">Old Bookmark Cleaner</a>
 
         <form action="#" id="form-options" class="clearfix">
             <button id="start" type="submit">Start</button>
 
             <div id="options">
                 <label for="concurrent-requests">Day threshold</label>
-                <input type="number" id="day-threshold" value="30">
+                <input type="number" id="day-threshold" value="60">
 
                 <label for="concurrent-requests">Concurrent requests</label>
                 <input type="number" id="concurrent-requests" value="7">
@@ -39,15 +39,6 @@
 
         <form action="#">
             <select id="filter-bookmarks">
-                <option value="error">Error</option>
-                <option value="serverError">Server error</option>
-                <option value="invalid">Invalid URL</option>
-                <option value="timeout">Timeout</option>
-                <option value="emptyFolder">Empty folders</option>
-                <option value="javascript">Bookmarklets</option>
-                <option value="local">Local files</option>
-                <option value="redirect">Redirected</option>
-                <option value="ok">OK</option>
             </select>
 
             <button id="delete-all">Delete all</button>

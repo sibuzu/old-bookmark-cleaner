@@ -1,15 +1,6 @@
 var bookmarks = {
     queue: [],
-    error: [],
-    serverError: [],
-    invalid: [],
-    timeout: [],
-    emptyFolder: [],
-    javascript: [],
-    local: [],
-    redirect: [],
-    old: [],
-    ok: []
+    expired: []
 };
 
 var dayThreshold;
@@ -47,6 +38,7 @@ function readBookmark(node, path) {
         id: node.id,
         date: node.dateAdded,
         fullPath: path.join(' > '),
+        group: path[path.length - 1],
         status: 0
         // redirectTo: if 301, 302
     };
@@ -133,66 +125,14 @@ function httpRequest() {
     var days = parseInt((now - urldate)/(24*3600*1000));
     bookmark.status = days;
     if (days > dayThreshold)
-        bookmarks.timeout.push(bookmark);
-    else
-        bookmarks.ok.push(bookmark);
+        bookmarks.expired.push(bookmark);
+    else {
+        var group = bookmark.group;
+        if (!bookmarks[group])
+            bookmarks[group] = []
+        bookmarks[group].push(bookmark);
+    }
     httpRequest();
-
-    return;
-
-    // Show current url - only first 60 characters
-    var currentUrl = limitString(bookmark.url, 60);
-    $testingUrl.innerHTML = htmlEscape(currentUrl);
-
-    // Start HTTP request
-    var xhr = new XMLHttpRequest();
-    xhr.timeout = timeout;
-    xhr.open(method, bookmark.url, true);
-
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === XMLHttpRequest.DONE) {
-            counter++;
-
-            // Progress bar
-            var percentage = 100 * (counter / total).toFixed(2);
-            $progressInner.style.width = percentage + '%';
-
-            // Page title like 5/400
-            document.title = counter + '/' + total;
-
-            bookmark.status = xhr.status;
-
-            // 0
-            if (xhr.status < 200) {
-                bookmarks.timeout.push(bookmark);
-            }
-            // 2xx - 3xx
-            else if (xhr.status < 400) {
-                // 2xx
-                if (isSameUrl(xhr.responseURL, bookmark.url)) {
-                    bookmarks.ok.push(bookmark);
-                }
-                // 3xx
-                else {
-                    bookmark.status = '3xx';
-                    bookmark.redirectTo = xhr.responseURL;
-                    bookmarks.redirect.push(bookmark);
-                }
-            }
-            // 4xx
-            else if (xhr.status < 500) {
-                bookmarks.error.push(bookmark);
-            }
-            // 5xx
-            else {
-                bookmarks.serverError.push(bookmark);
-            }
-
-            // Next...
-            httpRequest();
-        }
-    };
-    xhr.send();
 }
 
 
@@ -215,10 +155,19 @@ function finished() {
     // Show delete all button
     $deleteAll.style.display = 'inline-block';
 
+    var txt = 'Expired (' + bookmarks["expired"].length + ')';
+    $filterBookmarks.options.add(new Option(txt, "expired"));
+
+    for (var name in bookmarks) {
+        if (name == "queue" || name == "expired") continue
+        txt = name + ' (' + bookmarks[name].length + ')';
+        $filterBookmarks.options.add(new Option(txt, name));
+    }
+
     // Show counter for each filter
-    Array.from($filterBookmarks).forEach(function(e) {
-        e.innerHTML += ' (' + bookmarks[e.value].length + ')';
-    });
+    // Array.from($filterBookmarks).forEach(function(e) {
+    //     e.innerHTML += ' (' + bookmarks[e.value].length + ')';
+    // });
 
     // Show table via renderTemplate
     $filterBookmarks.dispatchEvent(new Event('change'));
