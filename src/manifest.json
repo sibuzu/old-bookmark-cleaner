@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
-    "name": "Quick Bookmark Cleaner",
+    "name": "Old Bookmark Cleaner",
     "version": "1.1",
 
-    "description": "Identify broken bookmarks, update links to https, delete old bookmarks, edit bookmark title, find javascript links and empty folders",
+    "description": "Clean old/unused bookmarks",
     "icons": {
         "16": "img/16.png",
         "48": "img/48.png",

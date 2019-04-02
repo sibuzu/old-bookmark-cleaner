@@ -8,9 +8,11 @@ var bookmarks = {
     javascript: [],
     local: [],
     redirect: [],
+    old: [],
     ok: []
 };
 
+var dayThreshold;
 var concurrentRequests;
 var timeout;
 var method;
@@ -22,6 +24,7 @@ var total = 0;
 var $formOptions = document.getElementById('form-options');
 var $start = document.getElementById('start');
 var $options = document.getElementById('options');
+var $dayThreshold = document.getElementById('day-threshold');
 var $concurrentRequests = document.getElementById('concurrent-requests');
 var $requestTimeout = document.getElementById('request-timeout');
 var $httpMethod = document.getElementById('http-method');
@@ -42,6 +45,7 @@ function readBookmark(node, path) {
         title: node.title,
         url: node.url,
         id: node.id,
+        date: node.dateAdded,
         fullPath: path.join(' > '),
         status: 0
         // redirectTo: if 301, 302
@@ -123,6 +127,18 @@ function httpRequest() {
         finished();
         return;
     }
+
+    var now = new Date();
+    var urldate = new Date(bookmark.date);
+    var days = parseInt((now - urldate)/(24*3600*1000));
+    bookmark.status = days;
+    if (days > dayThreshold)
+        bookmarks.timeout.push(bookmark);
+    else
+        bookmarks.ok.push(bookmark);
+    httpRequest();
+
+    return;
 
     // Show current url - only first 60 characters
     var currentUrl = limitString(bookmark.url, 60);
@@ -354,6 +370,7 @@ addEvent($formOptions, 'submit', function(e) {
     e.preventDefault();
 
     // Set options
+    dayThreshold = +$dayThreshold.value;
     concurrentRequests = +$concurrentRequests.value;
     timeout = $requestTimeout.value * 1000;
     method = $httpMethod.value;
