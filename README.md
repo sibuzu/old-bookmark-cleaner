@@ -1,5 +1,5 @@
-# Quick Bookmark Cleaner
-Quick Bookmark Cleaner is a Google Chrome extension to identify broken bookmarks, update links to https, delete old bookmarks, edit bookmarks title, find javascript links and empty folders
+# Old Bookmark Cleaner
+Old Bookmark Cleaner is a Google Chrome extension to clean old/unused bookmarks.  This code is forked from gabrielbarros/quick-bookmark-cleaner and modified.
 
 ## How to install
 https://chrome.google.com/webstore/detail/ljfgijlbekebdhniagdekklbmmchhjja
