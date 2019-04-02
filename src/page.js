@@ -4,21 +4,16 @@ var bookmarks = {
 };
 
 var dayThreshold;
-var concurrentRequests;
-var timeout;
-var method;
 
 var counter = 0;
 var finishedCounter = 0;
 var total = 0;
+var concurrentRequests = 1;
 
 var $formOptions = document.getElementById('form-options');
 var $start = document.getElementById('start');
 var $options = document.getElementById('options');
 var $dayThreshold = document.getElementById('day-threshold');
-var $concurrentRequests = document.getElementById('concurrent-requests');
-var $requestTimeout = document.getElementById('request-timeout');
-var $httpMethod = document.getElementById('http-method');
 var $progress = document.getElementById('progress');
 var $progressInner = document.getElementById('progress-inner');
 var $testingUrl = document.getElementById('testing-url');
@@ -197,7 +192,7 @@ function renderTemplate(list, opt) {
 
     tpl += '<thead>';
     tpl += '<tr class="' + opt.classTr + '">';
-    tpl += '<th class="td-code">Code</th>';
+    tpl += '<th class="td-code">Days</th>';
     tpl += '<th class="td-title">Title</th>';
 
     if (opt.redirect) {
@@ -221,6 +216,10 @@ function renderTemplate(list, opt) {
     var url;
     var redirectTo;
     var editable = 'contentEditable spellcheck="false"';
+
+    list.sort(function (a, b) {
+        return b.status - a.status;
+    });
 
     for (var i = 0, len = list.length; i < len; i++) {
         id = list[i].id;
@@ -320,9 +319,6 @@ addEvent($formOptions, 'submit', function(e) {
 
     // Set options
     dayThreshold = +$dayThreshold.value;
-    concurrentRequests = +$concurrentRequests.value;
-    timeout = $requestTimeout.value * 1000;
-    method = $httpMethod.value;
 
     $start.style.display = 'none';
     $options.style.display = 'none';
