@@ -95,6 +95,22 @@ function updateBookmark(id, opt, callback) {
     });
 }
 
+function refreshBookmark(id, callback) {
+    chrome.bookmarks.get(id, function(bks) {
+        bks.forEach(function(bookmark) {
+            var newbookmark = {
+                parentId: bookmark.parentId,
+                title: bookmark.title,
+                url: bookmark.url
+            }
+            chrome.bookmarks.remove(id, function() {
+                chrome.bookmarks.create(newbookmark, function() {
+                    callback && callback(!chrome.runtime.lastError);
+                })
+            })
+        })
+    })
+}
 
 function isSameUrl(str1, str2) {
     var url1 = new URL(str1);
@@ -253,7 +269,7 @@ function renderTemplate(list, opt) {
             limitString(url, 40) + '&#34;"></td>';
         tpl += '<td class="td-remove" title="Remove bookmark &#34;' + title +
             '&#34;"></td>';
-        tpl += '<td class="td-archive" title="Archive page"></td>';
+        tpl += '<td class="td-refresh" title="Refresh page"></td>';
 
         if (opt.redirect) {
             tpl += '<td class="td-update" title="Update URL to &#34;' +
@@ -428,13 +444,9 @@ addEvent($table, 'click', function(e) {
         });
     }
 
-    else if (className === 'td-archive') {
-        bookmarkUrl = $parent.children[2].innerText;
-
-        chrome.tabs.create({
-            url: 'http://archive.is/?run=1&url=' +
-                encodeURIComponent(bookmarkUrl)
-        });
+    else if (className === 'td-refresh') {
+        bookmarkId = $parent.getAttribute('data-id');
+        refreshBookmark(bookmarkId);
     }
 });
 
